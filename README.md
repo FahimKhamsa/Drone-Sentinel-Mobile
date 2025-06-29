@@ -1,4 +1,4 @@
-# drone_detector
+# Drone Sentinel
 
 A new Flutter project.
 

@@ -1,0 +1,181 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart'; // For compute in isolate for FFT
+import '../../core/app_constants.dart';
+import '../../core/utils/enhanced_audio_utils.dart';
+import '../../core/utils/detection_state_manager.dart';
+import '../../data/models/drone_detection_result.dart';
+import '../../domain/usecases/detect_drone_usecase.dart';
+
+/// ViewModel for the HomeScreen, managing UI state and logic.
+class HomeViewModel extends ChangeNotifier {
+  final DetectDroneUsecase _detectDroneUsecase;
+  final DetectionStateManager _detectionStateManager = DetectionStateManager();
+
+  bool _isDetecting = false;
+  String _detectionMessage = 'Press Start to listen';
+  bool _isDroneDetected = false;
+  double _detectionConfidence = 0.0;
+  List<double> _audioFrequencies = []; // Data for frequency visualization
+  List<double> _samples = []; // Data for waveform visualization
+  bool _isLoading = false;
+
+  StreamSubscription<DroneDetectionResult>? _detectionSubscription;
+  StreamSubscription<Uint8List>? _audioStreamForFftSubscription;
+
+  // Constructor with dependency injection
+  HomeViewModel(this._detectDroneUsecase) {
+    // Set up detection state manager callback
+    _detectionStateManager.setStateChangeCallback((
+      isDroneDetected,
+      confidence,
+      message,
+    ) {
+      _isDroneDetected = isDroneDetected;
+      _detectionConfidence = confidence;
+      _detectionMessage = message;
+
+      // Don't call notifyListeners() here - we'll do it in the audio stream
+      // to ensure perfect synchronization with waveform updates
+    });
+  }
+
+  // Getters for UI to observe
+  bool get isDetecting => _isDetecting;
+  String get detectionMessage => _detectionMessage;
+  bool get isDroneDetected => _isDroneDetected;
+  double get detectionConfidence => _detectionConfidence;
+  List<double> get audioFrequencies => _audioFrequencies;
+  List<double> get samples => _samples;
+  bool get isLoading => _isLoading;
+
+  /// Initializes the ViewModel.
+  void initialize() {
+    // You might start listening to audio stream for FFT here if it's separate from ML.
+    // For now, it's integrated with toggleDetection.
+  }
+
+  /// Toggles the drone detection process (Start/Pause).
+  Future<void> toggleDetection() async {
+    // Prevent multiple simultaneous toggle attempts
+    if (_isLoading) return;
+
+    if (_isDetecting) {
+      // If currently detecting, stop it
+      _isLoading = true;
+      notifyListeners();
+
+      try {
+        await _detectDroneUsecase.stopDetection();
+        await _audioStreamForFftSubscription?.cancel();
+        _audioStreamForFftSubscription = null;
+
+        // Clear audio processing history for clean restart
+        EnhancedAudioUtils.clearHistory();
+
+        // Reset detection state manager
+        _detectionStateManager.reset();
+
+        _isDetecting = false;
+        _detectionMessage = 'Detection Paused';
+        _isDroneDetected = false;
+        _detectionConfidence = 0.0;
+        _audioFrequencies = [];
+        _samples = [];
+      } catch (e) {
+        _detectionMessage = 'Error stopping detection: $e';
+        print('Error stopping detection: $e');
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
+    } else {
+      // Starting detection
+      _isLoading = true;
+      _detectionMessage = 'Initializing...';
+      _isDroneDetected = false;
+      _detectionConfidence = 0.0;
+      _audioFrequencies = [];
+      _samples = [];
+      notifyListeners();
+
+      try {
+        // Start the detection stream
+        _detectionSubscription = _detectDroneUsecase.startDetection().listen(
+          (result) {
+            // Process through detection state manager for smoothing and persistence
+            _detectionStateManager.processPrediction(
+              result.isDroneDetected,
+              result.confidence,
+            );
+
+            // Update waveform data from the same source as detection
+            if (result.audioSamples != null && _isDetecting) {
+              _samples = result.audioSamples!;
+
+              // Compute FFT for frequency visualization
+              _computeFrequenciesFromSamples(result.audioSamples!);
+            }
+
+            // Single synchronized UI update for both detection state and waveform
+            if (_isDetecting) {
+              notifyListeners();
+            }
+          },
+          onError: (e) {
+            _detectionMessage = 'Detection Error: $e';
+            _isDroneDetected = false;
+            _detectionConfidence = 0.0;
+            _isDetecting = false;
+            _isLoading = false;
+            notifyListeners();
+            print('Detection stream error: $e');
+          },
+          onDone: () {
+            _isDetecting = false;
+            _detectionMessage = 'Detection Finished';
+            _isDroneDetected = false;
+            _detectionConfidence = 0.0;
+            _isLoading = false;
+            notifyListeners();
+          },
+        );
+
+        _isDetecting = true;
+        _detectionMessage = 'Listening for drones...';
+      } catch (e) {
+        _detectionMessage = 'Failed to start detection: $e';
+        _isDroneDetected = false;
+        _detectionConfidence = 0.0;
+        _isDetecting = false;
+        print('Error starting detection: $e');
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
+    }
+  }
+
+  /// Computes frequency data from audio samples for visualization (low-latency)
+  void _computeFrequenciesFromSamples(List<double> audioSamples) {
+    try {
+      // Use low-latency FFT for faster processing
+      _audioFrequencies = EnhancedAudioUtils.performLowLatencyFft(
+        audioSamples,
+        AppConstants.audioSampleRate,
+      );
+    } catch (e) {
+      print('Error computing frequencies: $e');
+      _audioFrequencies = [];
+    }
+  }
+
+  /// Disposes of resources when the ViewModel is no longer needed.
+  @override
+  void dispose() {
+    _detectionSubscription?.cancel();
+    _audioStreamForFftSubscription?.cancel();
+    _detectDroneUsecase.stopDetection();
+    _detectionStateManager.dispose();
+    super.dispose();
+  }
+}
