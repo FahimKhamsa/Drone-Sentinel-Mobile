@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:path_provider/path_provider.dart';
 import '../../core/app_constants.dart';
 
 class AudioCaptureService {
@@ -81,40 +80,6 @@ class AudioCaptureService {
         await _audioStreamController!.close();
         _audioStreamController = null;
       }
-      rethrow;
-    }
-  }
-
-  /// Debug method to save audio to file for analysis
-  Future<String> startCaptureToFile() async {
-    // Ensure recorder is initialized
-    if (!_isInitialized) {
-      print('Recorder not initialized. Attempting to initialize...');
-      await initRecorder();
-    }
-
-    if (_recorder.isRecording) {
-      print('Recorder is already recording. Stopping previous recording...');
-      await stopCapture();
-    }
-
-    try {
-      // Get app documents directory
-      final directory = await getApplicationDocumentsDirectory();
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final filePath = '${directory.path}/debug_audio_$timestamp.wav';
-
-      await _recorder.startRecorder(
-        toFile: filePath,
-        codec: Codec.pcm16WAV,
-        numChannels: AppConstants.audioChannels,
-        sampleRate: AppConstants.audioSampleRate,
-      );
-
-      print('Recording to file: $filePath');
-      return filePath;
-    } catch (e) {
-      print('Error starting file recording: $e');
       rethrow;
     }
   }
