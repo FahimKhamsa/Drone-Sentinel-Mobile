@@ -18,6 +18,7 @@ class HomeViewModel extends ChangeNotifier {
   List<double> _audioFrequencies = []; // Data for frequency visualization
   List<double> _samples = []; // Data for waveform visualization
   bool _isLoading = false;
+  List<double> _predictionScores = [0.0, 0.0]; // [backgroundNoise, fpvDrone]
 
   StreamSubscription<DroneDetectionResult>? _detectionSubscription;
   StreamSubscription<Uint8List>? _audioStreamForFftSubscription;
@@ -47,11 +48,20 @@ class HomeViewModel extends ChangeNotifier {
   List<double> get audioFrequencies => _audioFrequencies;
   List<double> get samples => _samples;
   bool get isLoading => _isLoading;
+  List<double> get predictionScores => _predictionScores;
 
   /// Initializes the ViewModel.
   void initialize() {
     // You might start listening to audio stream for FFT here if it's separate from ML.
     // For now, it's integrated with toggleDetection.
+  }
+
+  /// Updates the detection threshold used for determining drone detection
+  void updateDetectionThreshold(double threshold) {
+    // Update the detection state manager with the new threshold
+    _detectionStateManager.updateThreshold(threshold);
+    // Update the usecase with the new threshold
+    _detectDroneUsecase.updateDetectionThreshold(threshold);
   }
 
   /// Toggles the drone detection process (Start/Pause).
@@ -107,6 +117,11 @@ class HomeViewModel extends ChangeNotifier {
               result.isDroneDetected,
               result.confidence,
             );
+
+            // Update prediction scores from the model
+            if (result.predictionScores != null && _isDetecting) {
+              _predictionScores = result.predictionScores!;
+            }
 
             // Update waveform data from the same source as detection
             if (result.audioSamples != null && _isDetecting) {

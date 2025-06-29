@@ -14,11 +14,15 @@ class DroneDetectionResult {
   /// Optional audio samples for synchronized waveform visualization
   final List<double>? audioSamples;
 
+  /// Raw prediction scores from the model [backgroundNoise, fpvDrone]
+  final List<double>? predictionScores;
+
   DroneDetectionResult({
     required this.isDroneDetected,
     required this.confidence,
     required this.message,
     this.audioSamples,
+    this.predictionScores,
   });
 
   @override

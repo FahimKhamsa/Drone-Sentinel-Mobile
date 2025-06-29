@@ -7,17 +7,15 @@ import 'app_colors.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
+      brightness: Brightness.dark,
       primaryColor: AppColors.primaryColor,
       hintColor: AppColors.accentColor,
       scaffoldBackgroundColor: AppColors.backgroundColor,
       appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.primaryColor,
-        foregroundColor: Colors.white, // Text and icon color on AppBar
+        backgroundColor: AppColors.backgroundColor,
+        foregroundColor: AppColors.textColor,
         centerTitle: true,
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-        ),
+        elevation: 0,
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(

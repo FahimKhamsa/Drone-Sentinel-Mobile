@@ -36,7 +36,10 @@ class TfliteInferenceService {
   TfliteInferenceService(this._modelRepository);
 
   /// Runs inference on the provided audio features in a separate isolate.
-  Future<DroneDetectionResult> runInference(Float32List audioFeatures) async {
+  Future<DroneDetectionResult> runInference(
+    Float32List audioFeatures, {
+    double? threshold,
+  }) async {
     // Add a guard clause to ensure the model is loaded before proceeding.
     if (!_modelRepository.isLoaded) {
       print("TfliteInferenceService: Model not loaded. Skipping inference.");
@@ -104,7 +107,9 @@ class TfliteInferenceService {
 
       // FPV Drone is at index 1 (like web version)
       const int fpvDroneIndex = 1;
-      double confidenceThreshold = AppConstants.droneDetectionThreshold;
+      // Use dynamic threshold if provided, otherwise fall back to default
+      double confidenceThreshold =
+          threshold ?? AppConstants.droneDetectionThreshold;
 
       bool isDroneDetected = false;
 
@@ -133,6 +138,7 @@ class TfliteInferenceService {
         isDroneDetected: isDroneDetected,
         confidence: maxValue, // Use the max confidence like web version
         message: message,
+        predictionScores: scores, // Include raw prediction scores
       );
     } catch (e) {
       print('Error during TFLite inference: $e');

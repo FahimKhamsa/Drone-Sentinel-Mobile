@@ -8,7 +8,7 @@ import 'package:drone_detector/core/app_constants.dart';
 class DetectionStateManager {
   // Configuration parameters
   static const int _historySize = 5; // Number of recent predictions to keep
-  static const double _detectionThreshold =
+  double _detectionThreshold =
       AppConstants.droneDetectionThreshold; // Threshold to trigger detection
   static const double _clearThreshold =
       0.2; // Threshold to clear detection (hysteresis)
@@ -35,6 +35,11 @@ class DetectionStateManager {
     Function(bool isDroneDetected, double confidence, String message) callback,
   ) {
     _onStateChanged = callback;
+  }
+
+  /// Updates the detection threshold
+  void updateThreshold(double threshold) {
+    _detectionThreshold = threshold;
   }
 
   /// Processes a new prediction and updates the detection state

@@ -1,0 +1,162 @@
+{
+  "appTitle": "Детектор Дронів",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "supportBanner": "Підтримати Drone Sentinel",
+  "@supportBanner": {
+    "description": "Support banner text"
+  },
+  "droneSentinelTitle": "Drone Sentinel",
+  "@droneSentinelTitle": {
+    "description": "Main title of the app"
+  },
+  "droneSentinelSubtitle": "Розширене виявлення дронів на базі ШІ",
+  "@droneSentinelSubtitle": {
+    "description": "Subtitle describing the app functionality"
+  },
+  "startListening": "Почати прослуховування",
+  "@startListening": {
+    "description": "Button text to start drone detection"
+  },
+  "stopListening": "Зупинити прослуховування",
+  "@stopListening": {
+    "description": "Button text to stop drone detection"
+  },
+  "loading": "Завантаження...",
+  "@loading": {
+    "description": "Loading state text"
+  },
+  "aboutTitle": "Про Drone Sentinel",
+  "@aboutTitle": {
+    "description": "About section title"
+  },
+  "aboutDescription": "Drone Sentinel використовує передові технології штучного інтелекту для виявлення звуків дронів у реальному часі. Наша модель машинного навчання аналізує звукові патерни для виявлення потенційної активності дронів з високою точністю.",
+  "@aboutDescription": {
+    "description": "About section description"
+  },
+  "detectionDashboard": "Панель виявлення",
+  "@detectionDashboard": {
+    "description": "Dashboard section title"
+  },
+  "detectionThreshold": "Поріг виявлення",
+  "@detectionThreshold": {
+    "description": "Threshold setting label"
+  },
+  "droneDetected": "ДРОН ВИЯВЛЕНО!",
+  "@droneDetected": {
+    "description": "Alert message when drone is detected"
+  },
+  "noDroneDetected": "Дрон не виявлено",
+  "@noDroneDetected": {
+    "description": "Message when no drone is detected"
+  },
+  "confidence": "Впевненість",
+  "@confidence": {
+    "description": "Confidence level label"
+  },
+  "audioWaveform": "Звукова хвиля",
+  "@audioWaveform": {
+    "description": "Audio waveform section title"
+  },
+  "frequencyAnalysis": "Частотний аналіз",
+  "@frequencyAnalysis": {
+    "description": "Frequency analysis section title"
+  },
+  "predictionScores": "Оцінки прогнозування",
+  "@predictionScores": {
+    "description": "Prediction scores section title"
+  },
+  "errorTitle": "Помилка",
+  "@errorTitle": {
+    "description": "Error dialog title"
+  },
+  "initializationError": "Помилка ініціалізації",
+  "@initializationError": {
+    "description": "Initialization error dialog title"
+  },
+  "permissionDenied": "Дозвіл відхилено",
+  "@permissionDenied": {
+    "description": "Permission denied dialog title"
+  },
+  "microphonePermissionRequired": "Для використання цього додатку потрібен дозвіл на мікрофон.",
+  "@microphonePermissionRequired": {
+    "description": "Microphone permission message"
+  },
+  "modelLoadError": "Не вдалося завантажити модель TensorFlow Lite. Будь ласка, перевірте шлях до моделі та файл.",
+  "@modelLoadError": {
+    "description": "Model loading error message"
+  },
+  "ok": "ОК",
+  "@ok": {
+    "description": "OK button text"
+  },
+  "soundDetectionMeter": "Лічильник виявлення звуку",
+  "@soundDetectionMeter": {
+    "description": "Sound detection meter title"
+  },
+  "listeningForSounds": "Прослуховування звуків...",
+  "@listeningForSounds": {
+    "description": "Status when listening for sounds"
+  },
+  "listening": "Прослуховування...",
+  "@listening": {
+    "description": "Short listening status"
+  },
+  "systemStatus": "Стан системи",
+  "@systemStatus": {
+    "description": "System status section title"
+  },
+  "monitoringFor": "Моніторинг",
+  "@monitoringFor": {
+    "description": "Monitoring for label"
+  },
+  "backgroundNoiseFpvDrone": "Фоновий шум, FPV дрон",
+  "@backgroundNoiseFpvDrone": {
+    "description": "What the system monitors for"
+  },
+  "microphone": "Мікрофон",
+  "@microphone": {
+    "description": "Microphone status label"
+  },
+  "connected": "Підключено",
+  "@connected": {
+    "description": "Connected status"
+  },
+  "model": "Модель",
+  "@model": {
+    "description": "Model status label"
+  },
+  "loaded": "Завантажено",
+  "@loaded": {
+    "description": "Loaded status"
+  },
+  "detectionStatus": "Стан виявлення",
+  "@detectionStatus": {
+    "description": "Detection status label"
+  },
+  "waitingForSounds": "Очікування звуків...",
+  "@waitingForSounds": {
+    "description": "Status when waiting for sounds"
+  },
+  "loadingSoundDetectionModel": "Завантаження моделі виявлення звуку...",
+  "@loadingSoundDetectionModel": {
+    "description": "Loading model status"
+  },
+  "moreDetections": "Більше виявлень",
+  "@moreDetections": {
+    "description": "Slider label for more detections"
+  },
+  "higherAccuracy": "Вища точність",
+  "@higherAccuracy": {
+    "description": "Slider label for higher accuracy"
+  },
+  "backgroundNoise": "Фоновий шум",
+  "@backgroundNoise": {
+    "description": "Background noise detection label"
+  },
+  "fpvDrone": "FPV дрон",
+  "@fpvDrone": {
+    "description": "FPV drone detection label"
+  }
+}

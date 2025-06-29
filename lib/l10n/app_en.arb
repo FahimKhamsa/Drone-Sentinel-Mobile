@@ -1,0 +1,162 @@
+{
+  "appTitle": "Drone Detector",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "supportBanner": "Support Drone Sentinel",
+  "@supportBanner": {
+    "description": "Support banner text"
+  },
+  "droneSentinelTitle": "Drone Sentinel",
+  "@droneSentinelTitle": {
+    "description": "Main title of the app"
+  },
+  "droneSentinelSubtitle": "Advanced AI-Powered Drone Detection",
+  "@droneSentinelSubtitle": {
+    "description": "Subtitle describing the app functionality"
+  },
+  "startListening": "Start Listening",
+  "@startListening": {
+    "description": "Button text to start drone detection"
+  },
+  "stopListening": "Stop Listening",
+  "@stopListening": {
+    "description": "Button text to stop drone detection"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading state text"
+  },
+  "aboutTitle": "About Drone Sentinel",
+  "@aboutTitle": {
+    "description": "About section title"
+  },
+  "aboutDescription": "Drone Sentinel uses advanced AI technology to detect drone sounds in real-time. Our machine learning model analyzes audio patterns to identify potential drone activity with high accuracy.",
+  "@aboutDescription": {
+    "description": "About section description"
+  },
+  "detectionDashboard": "Detection Dashboard",
+  "@detectionDashboard": {
+    "description": "Dashboard section title"
+  },
+  "detectionThreshold": "Detection Threshold",
+  "@detectionThreshold": {
+    "description": "Threshold setting label"
+  },
+  "droneDetected": "DRONE DETECTED!",
+  "@droneDetected": {
+    "description": "Alert message when drone is detected"
+  },
+  "noDroneDetected": "No Drone Detected",
+  "@noDroneDetected": {
+    "description": "Message when no drone is detected"
+  },
+  "confidence": "Confidence",
+  "@confidence": {
+    "description": "Confidence level label"
+  },
+  "audioWaveform": "Audio Waveform",
+  "@audioWaveform": {
+    "description": "Audio waveform section title"
+  },
+  "frequencyAnalysis": "Frequency Analysis",
+  "@frequencyAnalysis": {
+    "description": "Frequency analysis section title"
+  },
+  "predictionScores": "Prediction Scores",
+  "@predictionScores": {
+    "description": "Prediction scores section title"
+  },
+  "errorTitle": "Error",
+  "@errorTitle": {
+    "description": "Error dialog title"
+  },
+  "initializationError": "Initialization Error",
+  "@initializationError": {
+    "description": "Initialization error dialog title"
+  },
+  "permissionDenied": "Permission Denied",
+  "@permissionDenied": {
+    "description": "Permission denied dialog title"
+  },
+  "microphonePermissionRequired": "Microphone permission is required to use this app.",
+  "@microphonePermissionRequired": {
+    "description": "Microphone permission message"
+  },
+  "modelLoadError": "Failed to load TensorFlow Lite model. Please check the model path and file.",
+  "@modelLoadError": {
+    "description": "Model loading error message"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button text"
+  },
+  "soundDetectionMeter": "Sound Detection Meter",
+  "@soundDetectionMeter": {
+    "description": "Sound detection meter title"
+  },
+  "listeningForSounds": "Listening for sounds...",
+  "@listeningForSounds": {
+    "description": "Status when listening for sounds"
+  },
+  "listening": "Listening...",
+  "@listening": {
+    "description": "Short listening status"
+  },
+  "systemStatus": "System Status",
+  "@systemStatus": {
+    "description": "System status section title"
+  },
+  "monitoringFor": "Monitoring For",
+  "@monitoringFor": {
+    "description": "Monitoring for label"
+  },
+  "backgroundNoiseFpvDrone": "Background Noise, FPV Drone",
+  "@backgroundNoiseFpvDrone": {
+    "description": "What the system monitors for"
+  },
+  "microphone": "Microphone",
+  "@microphone": {
+    "description": "Microphone status label"
+  },
+  "connected": "Connected",
+  "@connected": {
+    "description": "Connected status"
+  },
+  "model": "Model",
+  "@model": {
+    "description": "Model status label"
+  },
+  "loaded": "Loaded",
+  "@loaded": {
+    "description": "Loaded status"
+  },
+  "detectionStatus": "Detection Status",
+  "@detectionStatus": {
+    "description": "Detection status label"
+  },
+  "waitingForSounds": "Waiting for sounds...",
+  "@waitingForSounds": {
+    "description": "Status when waiting for sounds"
+  },
+  "loadingSoundDetectionModel": "Loading sound detection model...",
+  "@loadingSoundDetectionModel": {
+    "description": "Loading model status"
+  },
+  "moreDetections": "More Detections",
+  "@moreDetections": {
+    "description": "Slider label for more detections"
+  },
+  "higherAccuracy": "Higher Accuracy",
+  "@higherAccuracy": {
+    "description": "Slider label for higher accuracy"
+  },
+  "backgroundNoise": "Background Noise",
+  "@backgroundNoise": {
+    "description": "Background noise detection label"
+  },
+  "fpvDrone": "FPV Drone",
+  "@fpvDrone": {
+    "description": "FPV drone detection label"
+  }
+}

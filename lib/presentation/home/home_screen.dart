@@ -1,10 +1,16 @@
 // lib/presentation/home/home_screen.dart
 
-import 'package:drone_detector/presentation/home/widgets/enhanced_audio_waveform_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../theme/app_colors.dart';
+import '../../core/services/language_service.dart';
 import 'home_viewmodel.dart';
-import 'widgets/control_buttons_widget.dart';
+import 'widgets/support_banner_widget.dart';
+import 'widgets/language_toggle_widget.dart';
+import 'widgets/drone_sentinel_header_widget.dart';
+import 'widgets/start_listening_button_widget.dart';
+import 'widgets/about_drone_sentinel_widget.dart';
+import 'widgets/sound_detection_dashboard_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,123 +20,97 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Access the ViewModel instance
   late HomeViewModel _viewModel;
+  double _detectionThreshold = 80.0;
 
   @override
   void initState() {
     super.initState();
-    // Get the ViewModel from the Provider
     _viewModel = Provider.of<HomeViewModel>(context, listen: false);
-    _viewModel.initialize(); // Initialize ViewModel resources
+    _viewModel.initialize();
+    // Set initial threshold
+    _viewModel.updateDetectionThreshold(_detectionThreshold / 100.0);
   }
 
   @override
   void dispose() {
-    _viewModel.dispose(); // Dispose ViewModel resources
+    _viewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Drone Detector'), centerTitle: true),
+      backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Display detection status
-              Consumer<HomeViewModel>(
-                builder: (context, viewModel, child) {
-                  Color textColor =
-                      viewModel.isDroneDetected
-                          ? Colors.red.shade700
-                          : Colors.green.shade700;
-                  return Column(
-                    children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        child: Text(
-                          viewModel.detectionMessage,
-                          key: ValueKey(viewModel.detectionMessage),
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: textColor,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      if (viewModel.isDetecting)
-                        AnimatedOpacity(
-                          opacity: viewModel.isDetecting ? 1.0 : 0.0,
-                          duration: const Duration(milliseconds: 200),
-                          child: Text(
-                            'Confidence: ${viewModel.detectionConfidence.toStringAsFixed(2)}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: textColor.withOpacity(0.8),
-                            ),
-                          ),
-                        ),
-                      const SizedBox(height: 20),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child:
-                            viewModel.isLoading
-                                ? const SizedBox(
-                                  key: ValueKey('loading'),
-                                  height: 24,
-                                  width: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.0,
-                                  ),
-                                )
-                                : const SizedBox(
-                                  key: ValueKey('not-loading'),
-                                  height: 24,
-                                ),
-                      ),
-                    ],
+              // Support Banner
+              SupportBannerWidget(),
+
+              const SizedBox(height: 20),
+
+              // Language Toggle
+              Consumer<LanguageService>(
+                builder: (context, languageService, child) {
+                  return LanguageToggleWidget(
+                    isEnglish: languageService.isEnglish,
+                    onToggle: (value) {
+                      languageService.changeLanguage(value);
+                    },
                   );
                 },
               ),
+
               const SizedBox(height: 30),
 
-              // Audio Frequency Bar Visualization
-              Consumer<HomeViewModel>(
-                builder: (context, viewModel, child) {
-                  return SizedBox(
-                    height: 150,
-                    width: double.infinity,
-                    // child: AudioFrequencyBarWidget(
-                    //   frequencies: viewModel.audioFrequencies,
-                    //   isDetecting: viewModel.isDetecting,
-                    // ),
-                    child: EnhancedAudioWaveformWidget(
-                      samples: viewModel.samples,
-                      isDetecting: viewModel.isDetecting,
-                      isDroneDetected: viewModel.isDroneDetected,
-                      confidence: viewModel.detectionConfidence,
-                    ),
-                  );
-                },
-              ),
+              // Drone Sentinel Header
+              const DroneSentinelHeaderWidget(),
+
               const SizedBox(height: 40),
 
-              // Control Buttons (Start/Pause)
+              // Start Listening Button
               Consumer<HomeViewModel>(
                 builder: (context, viewModel, child) {
-                  return ControlButtonsWidget(
-                    isDetecting: viewModel.isDetecting,
+                  return StartListeningButtonWidget(
+                    isListening: viewModel.isDetecting,
                     isLoading: viewModel.isLoading,
-                    onToggleDetection: viewModel.toggleDetection,
+                    onPressed: viewModel.toggleDetection,
                   );
                 },
               ),
+
+              const SizedBox(height: 40),
+
+              // About Drone Sentinel
+              const AboutDroneSentinelWidget(),
+
+              const SizedBox(height: 20),
+
+              // Sound Detection Dashboard
+              Consumer<HomeViewModel>(
+                builder: (context, viewModel, child) {
+                  return SoundDetectionDashboardWidget(
+                    isDetecting: viewModel.isDetecting,
+                    isDroneDetected: viewModel.isDroneDetected,
+                    detectionConfidence: viewModel.detectionConfidence,
+                    detectionThreshold: _detectionThreshold,
+                    onThresholdChanged: (value) {
+                      setState(() {
+                        _detectionThreshold = value;
+                      });
+                      // Update the viewmodel with the new threshold
+                      viewModel.updateDetectionThreshold(value / 100.0);
+                    },
+                    samples: viewModel.samples,
+                    audioFrequencies: viewModel.audioFrequencies,
+                    predictionScores: viewModel.predictionScores,
+                  );
+                },
+              ),
+
+              const SizedBox(height: 20),
             ],
           ),
         ),

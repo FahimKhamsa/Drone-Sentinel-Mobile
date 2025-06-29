@@ -21,6 +21,7 @@ class DetectDroneUsecase {
 
   StreamSubscription<Uint8List>? _audioSubscription;
   StreamController<DroneDetectionResult>? _detectionResultController;
+  double? _detectionThreshold; // Store the current threshold
 
   DetectDroneUsecase(
     this._audioCaptureService,
@@ -87,9 +88,9 @@ class DetectDroneUsecase {
               AppConstants.audioSampleRate,
             );
 
-            // 3. Run the inference using the TFLite model
+            // 3. Run the inference using the TFLite model with dynamic threshold
             final DroneDetectionResult result = await _tfliteInferenceService
-                .runInference(features);
+                .runInference(features, threshold: _detectionThreshold);
 
             // 4. Create enhanced result with audio data for synchronized visualization
             final DroneDetectionResult enhancedResult = DroneDetectionResult(
@@ -97,6 +98,8 @@ class DetectDroneUsecase {
               confidence: result.confidence,
               message: result.message,
               audioSamples: cleanAudioData, // Add audio data for waveform
+              predictionScores:
+                  result.predictionScores, // Pass through prediction scores
             );
 
             // 5. Push the enhanced detection result to the stream
@@ -182,6 +185,11 @@ class DetectDroneUsecase {
     }
     _detectionResultController = null;
     print('Drone detection stopped.');
+  }
+
+  /// Updates the detection threshold
+  void updateDetectionThreshold(double threshold) {
+    _detectionThreshold = threshold;
   }
 
   /// Exposes the audio capture service for other parts of the app (e.g., for FFT visualization).
