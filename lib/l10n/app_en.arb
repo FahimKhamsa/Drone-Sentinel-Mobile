@@ -3,7 +3,7 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "supportBanner": "Support Drone Sentinel",
+  "supportBanner": "Work in progress, click here for support",
   "@supportBanner": {
     "description": "Support banner text"
   },

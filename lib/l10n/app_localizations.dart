@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// Support banner text
   ///
   /// In en, this message translates to:
-  /// **'Support Drone Sentinel'**
+  /// **'Work in progress, click here for support'**
   String get supportBanner;
 
   /// Main title of the app

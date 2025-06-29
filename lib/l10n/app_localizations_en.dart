@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Drone Detector';
 
   @override
-  String get supportBanner => 'Support Drone Sentinel';
+  String get supportBanner => 'Work in progress, click here for support';
 
   @override
   String get droneSentinelTitle => 'Drone Sentinel';
