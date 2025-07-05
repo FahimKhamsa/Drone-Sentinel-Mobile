@@ -131,4 +131,14 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get fpvDrone => 'FPV дрон';
+
+  @override
+  String get droneDetectionWarning => 'Попередження про виявлення дрона';
+
+  @override
+  String get droneDetectedWarningMessage =>
+      'В районі виявлено дрон! Будь ласка, вживіть відповідних заходів безпеки.';
+
+  @override
+  String get close => 'Закрити';
 }

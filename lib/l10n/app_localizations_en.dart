@@ -130,4 +130,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fpvDrone => 'FPV Drone';
+
+  @override
+  String get droneDetectionWarning => 'Drone Detection Warning';
+
+  @override
+  String get droneDetectedWarningMessage =>
+      'A drone has been detected in the area! Please take appropriate safety measures.';
+
+  @override
+  String get close => 'Close';
 }

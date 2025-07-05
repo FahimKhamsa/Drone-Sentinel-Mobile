@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'core/app_constants.dart';
 import 'core/permissions.dart';
 import 'core/services/language_service.dart';
+import 'core/services/drone_warning_service.dart';
 import 'data/repositories/tflite_model_repository.dart';
 import 'data/services/audio_capture_service.dart';
 import 'data/services/tflite_inference_service.dart';
@@ -125,6 +126,11 @@ void main() async {
           create: (_) => LanguageService(),
         ),
 
+        // Provide drone warning service
+        ChangeNotifierProvider<DroneWarningService>(
+          create: (_) => DroneWarningService()..initialize(),
+        ),
+
         // Provide services
         Provider<AudioCaptureService>(create: (_) => AudioCaptureService()),
         Provider<TfliteInferenceService>(
@@ -149,6 +155,7 @@ void main() async {
           create:
               (context) => HomeViewModel(
                 Provider.of<DetectDroneUsecase>(context, listen: false),
+                Provider.of<DroneWarningService>(context, listen: false),
               ),
         ),
       ],

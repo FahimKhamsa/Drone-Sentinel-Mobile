@@ -337,6 +337,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'FPV Drone'**
   String get fpvDrone;
+
+  /// Warning modal title
+  ///
+  /// In en, this message translates to:
+  /// **'Drone Detection Warning'**
+  String get droneDetectionWarning;
+
+  /// Warning modal message
+  ///
+  /// In en, this message translates to:
+  /// **'A drone has been detected in the area! Please take appropriate safety measures.'**
+  String get droneDetectedWarningMessage;
+
+  /// Close button text
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
 }
 
 class _AppLocalizationsDelegate

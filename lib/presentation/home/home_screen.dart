@@ -33,6 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Set the context in the ViewModel for showing warning modals
+    _viewModel.setContext(context);
+  }
+
+  @override
   void dispose() {
     _viewModel.dispose();
     super.dispose();

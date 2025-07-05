@@ -158,5 +158,17 @@
   "fpvDrone": "FPV дрон",
   "@fpvDrone": {
     "description": "FPV drone detection label"
+  },
+  "droneDetectionWarning": "Попередження про виявлення дрона",
+  "@droneDetectionWarning": {
+    "description": "Warning modal title"
+  },
+  "droneDetectedWarningMessage": "В районі виявлено дрон! Будь ласка, вживіть відповідних заходів безпеки.",
+  "@droneDetectedWarningMessage": {
+    "description": "Warning modal message"
+  },
+  "close": "Закрити",
+  "@close": {
+    "description": "Close button text"
   }
 }

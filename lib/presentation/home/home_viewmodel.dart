@@ -1,36 +1,53 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart'; // For compute in isolate for FFT
+import 'package:flutter/material.dart';
 import '../../core/app_constants.dart';
 import '../../core/utils/enhanced_audio_utils.dart';
 import '../../core/utils/detection_state_manager.dart';
+import '../../core/services/drone_warning_service.dart';
 import '../../data/models/drone_detection_result.dart';
 import '../../domain/usecases/detect_drone_usecase.dart';
 
 /// ViewModel for the HomeScreen, managing UI state and logic.
 class HomeViewModel extends ChangeNotifier {
   final DetectDroneUsecase _detectDroneUsecase;
+  final DroneWarningService _droneWarningService;
   final DetectionStateManager _detectionStateManager = DetectionStateManager();
 
   bool _isDetecting = false;
   String _detectionMessage = 'Press Start to listen';
   bool _isDroneDetected = false;
+  bool _previousDroneDetected =
+      false; // Track previous state to detect new detections
   double _detectionConfidence = 0.0;
   List<double> _audioFrequencies = []; // Data for frequency visualization
   List<double> _samples = []; // Data for waveform visualization
   bool _isLoading = false;
   List<double> _predictionScores = [0.0, 0.0]; // [backgroundNoise, fpvDrone]
+  BuildContext? _currentContext; // Store context for showing warning modal
 
   StreamSubscription<DroneDetectionResult>? _detectionSubscription;
   StreamSubscription<Uint8List>? _audioStreamForFftSubscription;
 
   // Constructor with dependency injection
-  HomeViewModel(this._detectDroneUsecase) {
+  HomeViewModel(this._detectDroneUsecase, this._droneWarningService) {
     // Set up detection state manager callback
     _detectionStateManager.setStateChangeCallback((
       isDroneDetected,
       confidence,
       message,
     ) {
+      // Check if this is a new drone detection (transition from false to true)
+      if (isDroneDetected &&
+          !_previousDroneDetected &&
+          _currentContext != null) {
+        // Trigger warning modal with sound
+        _droneWarningService.showDroneWarning(_currentContext!);
+      }
+
+      // Update previous state for next comparison
+      _previousDroneDetected = _isDroneDetected;
+
       _isDroneDetected = isDroneDetected;
       _detectionConfidence = confidence;
       _detectionMessage = message;
@@ -54,6 +71,11 @@ class HomeViewModel extends ChangeNotifier {
   void initialize() {
     // You might start listening to audio stream for FFT here if it's separate from ML.
     // For now, it's integrated with toggleDetection.
+  }
+
+  /// Set the current context for showing warning modals
+  void setContext(BuildContext context) {
+    _currentContext = context;
   }
 
   /// Updates the detection threshold used for determining drone detection
@@ -88,6 +110,7 @@ class HomeViewModel extends ChangeNotifier {
         _isDetecting = false;
         _detectionMessage = 'Detection Paused';
         _isDroneDetected = false;
+        _previousDroneDetected = false; // Reset previous state
         _detectionConfidence = 0.0;
         _audioFrequencies = [];
         _samples = [];

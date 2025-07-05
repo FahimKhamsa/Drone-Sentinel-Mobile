@@ -158,5 +158,17 @@
   "fpvDrone": "FPV Drone",
   "@fpvDrone": {
     "description": "FPV drone detection label"
+  },
+  "droneDetectionWarning": "Drone Detection Warning",
+  "@droneDetectionWarning": {
+    "description": "Warning modal title"
+  },
+  "droneDetectedWarningMessage": "A drone has been detected in the area! Please take appropriate safety measures.",
+  "@droneDetectedWarningMessage": {
+    "description": "Warning modal message"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
   }
 }
